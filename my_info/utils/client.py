@@ -1,5 +1,4 @@
 import base64
-import logging
 from hashlib import sha256
 from json import JSONDecodeError
 from urllib.parse import quote, urlencode
@@ -186,7 +185,6 @@ class MyInfoPersonalClientV4(MyInfoClient):
             params=params,
         )
 
-        logger.info("RESP: %s", resp)
         return resp
 
     def retrieve_resource(self, auth_code: str, state: str, callback_url: str) -> dict:

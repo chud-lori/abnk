@@ -144,5 +144,4 @@ def decrypt_jwe(encrypted_data: str) -> dict:
 
     # verify the signature of the decrypted JWS
     jwkset = get_jwkset(MYINFO_CONNECTOR_CONFIG.get("MYINFO_JWKS_URL"))
-    # myinfo.singpass.gov.sg/.well-known/keys.json
     return verify_jws(jwetoken.payload.decode(), jwkset)
