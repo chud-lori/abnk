@@ -19,7 +19,7 @@ pip install -r requirements.txt
 ### In Browser
 
 1. Open the `127.0.0.1:3001`
-2. Click `Retrieve`
+2. Click `Retrieve My Info`
 3. Click `Login`
 4. Click `Agree`
 5. It will load the person data
