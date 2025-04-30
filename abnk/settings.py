@@ -222,13 +222,11 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
-# Path to your Django app directory (assuming it's named 'my_info')
 MY_INFO_APP_DIR = os.path.join(BASE_DIR, 'my_info')
 
-# Path to the 'cert' directory within your Django app
+# Path to cert dir
 CERT_DIR = os.path.join(MY_INFO_APP_DIR, 'cert')
 
-# Paths to your PEM files
+# Path to cert file
 ENCRYPTION_PRIVATE_KEY_PATH = os.path.join(CERT_DIR, 'encryption-private-keys', 'your-sample-app-encryption-private-key.pem')
 SIGNING_PRIVATE_KEY_PATH = os.path.join(CERT_DIR, 'your-sample-app-signing-private-key.pem')
