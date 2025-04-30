@@ -17,45 +17,97 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 LOGS_DIR = os.path.join(BASE_DIR, 'logs')
 
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'handlers': {
+#         'console': {
+#             'class': 'logging.StreamHandler',
+#         },
+#         'integration_file': {
+#             'level': 'INFO',
+#             'class': 'logging.handlers.RotatingFileHandler',
+#             'filename': os.path.join(LOGS_DIR, 'my_info.log'),
+#             'maxBytes': 10 * 1024 * 1024,  # 10 MB
+#             'backupCount': 5,
+#             'formatter': 'standard',
+#         },
+#     },
+#     'formatters': {
+#         'standard': {
+#             'format': '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+#         },
+#         'django_traffic': {
+#             'format': '[%(asctime)s] "%(request_method)s %(pathname)s %(server_protocol)s" %(response_code)s %(bytes_sent)s'
+#         },
+#     },
+#     'loggers': {
+#         'django.request': {
+#             'handlers': ['my_info_file'],
+#             'level': 'INFO',
+#             'propagate': False,  # Prevent duplicate logging to the console handler
+#         },
+#         'my_info': {
+#             'handlers': ['my_info_file'],
+#             'level': 'INFO',
+#             'propagate': False, # Prevent duplicate logging if you also log to console elsewhere
+#         },
+#         # The root logger applies to all loggers if propagate is True
+#         '': {
+#             'handlers': ['console'],
+#             'level': 'INFO',
+#         },
+#     },
+# }
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "standard": {
+            "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
         },
-        'integration_file': {
-            'level': 'INFO',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(LOGS_DIR, 'my_info.log'),
-            'maxBytes': 10 * 1024 * 1024,  # 10 MB
-            'backupCount': 5,
-            'formatter': 'standard',
+        "django_server": {
+            "format": "[%(asctime)s] \"%(message)s\"",
         },
     },
-    'formatters': {
-        'standard': {
-            'format': '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    "handlers": {
+        "console": {
+            "level": "INFO",
+            "class": "logging.StreamHandler",  # Logs to the console
+            "formatter": "standard",
         },
-        'django_traffic': {
-            'format': '[%(asctime)s] "%(request_method)s %(pathname)s %(server_protocol)s" %(response_code)s %(bytes_sent)s'
+        "my_info_file": {
+            "level": "INFO",
+            "class": "logging.handlers.RotatingFileHandler",
+            "filename": os.path.join(LOGS_DIR, 'my_info.log'),  # Single log file
+            "maxBytes": 10 * 1024 * 1024,  # 10 MB
+            "backupCount": 5,
+            "formatter": "standard",
+        },
+        "django_server_file": {
+            "level": "INFO",
+            "class": "logging.handlers.RotatingFileHandler",
+            "filename": os.path.join(LOGS_DIR, 'my_info.log'),  # Same file as my_info_file
+            "maxBytes": 10 * 1024 * 1024,  # 10 MB
+            "backupCount": 5,
+            "formatter": "django_server",
         },
     },
-    'loggers': {
-        'django.request': {
-            'handlers': ['my_info_file'],
-            'level': 'INFO',
-            'propagate': False,  # Prevent duplicate logging to the console handler
+    "loggers": {
+        "django.request": {
+            "handlers": ["my_info_file", "console"],  # Use my_info_file handler
+            "level": "INFO",
+            "propagate": False,  # Prevent duplicate logging
         },
-        'my_info': {
-            'handlers': ['my_info_file'],
-            'level': 'INFO',
-            'propagate': False, # Prevent duplicate logging if you also log to console elsewhere
+        "my_info": {
+            "handlers": ["my_info_file", "console"],  # Use the same handler
+            "level": "INFO",
+            "propagate": False,  # Prevent duplicate logging
         },
-        # The root logger applies to all loggers if propagate is True
-        '': {
-            'handlers': ['console'],
-            'level': 'INFO',
+        "django.server": {
+            "handlers": ["django_server_file", "console"],  # Log HTTP requests
+            "level": "INFO",
+            "propagate": False,  # Prevent duplicate logging
         },
     },
 }
