@@ -1,8 +1,21 @@
-2025-04-30 04:26:18,529 - my_info.utils.client - ERROR - HTTPError: b'{"code":400,"message":"Bad Request"}'
+[2025-04-30 04:51:34,910] ""GET / HTTP/1.1" 200 14177"
+[2025-04-30 04:51:35,883] ""GET /getEnv HTTP/1.1" 200 359"
+[2025-04-30 04:51:37,967] ""POST /generateCodeChallenge HTTP/1.1" 200 45"
+[2025-04-30 04:51:55,291] ""GET /callback?code=myinfo-com-1Vatjq2bjO9ZMJp5WmdMK4efWHkWf2dZGdOUpuaK HTTP/1.1" 200 14177"
+[2025-04-30 04:51:55,428] ""GET /getEnv HTTP/1.1" 200 359"
+[2025-04-30 04:52:01,007] ""POST /getPersonData HTTP/1.1" 200 4426"
+[2025-04-30 04:55:00,089] ""GET / HTTP/1.1" 200 14177"
+[2025-04-30 04:55:00,769] ""GET /getEnv HTTP/1.1" 200 359"
+[2025-04-30 04:55:04,137] ""POST /generateCodeChallenge HTTP/1.1" 200 45"
+[2025-04-30 04:55:15,633] ""GET /callback?code=myinfo-com-0FIKkEtrrkHpmjE2GAxciv6YI2TKn3LOtI3BRYKh HTTP/1.1" 200 14177"
+[2025-04-30 04:55:15,770] ""GET /getEnv HTTP/1.1" 200 359"
+2025-04-30 04:55:18,126 - my_info.utils.client - ERROR - HTTPError: b'{"code":400,"message":"Bad Request"}'
 Traceback (most recent call last):
   File "/Users/lori/intv/abnk/django_2024/backend/abnk/my_info/utils/client.py", line 81, in request
     response.raise_for_status()
   File "/Users/lori/.pyenv/versions/abnk/lib/python3.12/site-packages/requests/models.py", line 1024, in raise_for_status
     raise HTTPError(http_error_msg, response=self)
 requests.exceptions.HTTPError: 400 Client Error: Bad Request for url: https://test.api.myinfo.gov.sg/com/v4/token
-2025-04-30 04:26:18,536 - my_info - ERROR - Error: 400 Client Error: Bad Request for url: https://test.api.myinfo.gov.sg/com/v4/token
+2025-04-30 04:55:18,129 - my_info - ERROR - Error: 400 Client Error: Bad Request for url: https://test.api.myinfo.gov.sg/com/v4/token
+2025-04-30 04:55:18,130 - django.request - ERROR - Internal Server Error: /getPersonData
+[2025-04-30 04:55:18,131] ""POST /getPersonData HTTP/1.1" 500 95"
