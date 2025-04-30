@@ -2,18 +2,15 @@ import base64
 import json
 import time
 from hashlib import sha256
-import os
 
 import requests
-import logging
 from django.conf import settings
 from my_info.config import APP_CONFIG, MYINFO_CONNECTOR_CONFIG
 # from django.core.cache import cache
 from django.utils.crypto import get_random_string
 from jwcrypto import jwe, jwk, jws
 from jwcrypto.jwk import JWK, JWKSet
-
-log = logging.getLogger(__name__)
+from my_info.utils.logging_utils import logger
 
 
 # ========== Myinfo v4 (JWKS) ===========
@@ -35,34 +32,30 @@ def generate_ephemeral_session_keypair() -> JWK:
 
 
 def open_cert(cert_name: str):
-    """Reads the content of a PEM file using the path defined in settings.py."""
     file_path = getattr(settings, cert_name, None)
-    if file_path:
-        try:
-            with open(file_path, 'rb') as f:
-                content = f.read()
-            return content
-        except FileNotFoundError:
-            print(f"Error: File not found at {file_path}")
-            return None
-        except Exception as e:
-            print(f"Error reading file {file_path}: {e}")
-            return None
-    else:
-        print(f"Error: Setting '{cert_name}' not found in settings.py")
+    if not file_path:
+        logger.error(f"Error: Setting '{cert_name}' not found in settings.py")
+        return None
+    try:
+        with open(file_path, 'rb') as f:
+            content = f.read()
+        return content
+    except FileNotFoundError:
+        logger.error(f"Error: File not found at {file_path}")
+        return None
+    except Exception as e:
+        logger.error(f"Error reading file {file_path}: {e}")
         return None
 
 def generate_client_assertion(url: str, jkt_thumbprint: str) -> str:
     """See https://api.singpass.gov.sg/library/myinfo/developers/clientassertion"""
     now = int(time.time())
     payload = {
-        # "sub": myinfo_settings.MYINFO_CLIENT_ID,
         "sub": APP_CONFIG.get("DEMO_APP_CLIENT_ID"),
         # generate unique randomstring on every client_assertion for jti
         "jti": get_random_string(40),
         "aud": url,
         "iss": APP_CONFIG.get("DEMO_APP_CLIENT_ID"),
-        # "iss": myinfo_settings.MYINFO_CLIENT_ID,
         "iat": now,
         "exp": now + 300,  # expiry of client_assertion set to 5mins max
         "cnf": {
@@ -151,5 +144,5 @@ def decrypt_jwe(encrypted_data: str) -> dict:
 
     # verify the signature of the decrypted JWS
     jwkset = get_jwkset(MYINFO_CONNECTOR_CONFIG.get("MYINFO_JWKS_URL"))
+    # myinfo.singpass.gov.sg/.well-known/keys.json
     return verify_jws(jwetoken.payload.decode(), jwkset)
-

@@ -17,8 +17,7 @@ from my_info.utils.security import (
     verify_jws,
 )
 from requests import HTTPError
-
-log = logging.getLogger(__name__)
+from my_info.utils.logging_utils import logger
 
 
 class MyInfoClient(object):
@@ -80,7 +79,7 @@ class MyInfoClient(object):
         try:
             response.raise_for_status()
         except HTTPError as e:
-            log.exception("HTTPError: %s", e.response.content)
+            logger.exception("HTTPError: %s", e.response.content)
             raise
 
         try:
@@ -186,6 +185,8 @@ class MyInfoPersonalClientV4(MyInfoClient):
             },
             params=params,
         )
+
+        logger.info("RESP: %s", resp)
         return resp
 
     def retrieve_resource(self, auth_code: str, state: str, callback_url: str) -> dict:
