@@ -1,0 +1,8 @@
+2025-04-30 04:26:18,529 - my_info.utils.client - ERROR - HTTPError: b'{"code":400,"message":"Bad Request"}'
+Traceback (most recent call last):
+  File "/Users/lori/intv/abnk/django_2024/backend/abnk/my_info/utils/client.py", line 81, in request
+    response.raise_for_status()
+  File "/Users/lori/.pyenv/versions/abnk/lib/python3.12/site-packages/requests/models.py", line 1024, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 400 Client Error: Bad Request for url: https://test.api.myinfo.gov.sg/com/v4/token
+2025-04-30 04:26:18,536 - my_info - ERROR - Error: 400 Client Error: Bad Request for url: https://test.api.myinfo.gov.sg/com/v4/token
